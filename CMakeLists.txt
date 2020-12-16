@@ -18,6 +18,9 @@ endif()
 
 message(STATUS "Target system: ${TARGET_SYSTEM}")
 
+# Threads
+find_package(Threads REQUIRED)
+
 # RtAudio library
 if (UNIX)
     set(RTAUDIO_LIBRARIES "${PROJECT_SOURCE_DIR}/dll/rtaudio/librtaudio.so")
@@ -27,6 +30,12 @@ endif()
 set(SOUNDSYNTH_MAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/src/main.cpp")
 set(SOUNDSYNTH_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/src/main.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/Synthesizer.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/Synthesizer.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/Oscillator/Oscillator.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/Oscillator/Oscillator.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/SynthesisModule/SynthesisModule.h"
+    "${CMAKE_CURRENT_LIST_DIR}/src/Synthesizer/SynthesisModule/SynthesisModule.cpp"
 
     # (...)
 )
@@ -40,4 +49,4 @@ target_sources(soundSynth
 )
 
 target_include_directories(soundSynth PUBLIC "src/" "include/rtaudio/")
-target_link_libraries(soundSynth ${RTAUDIO_LIBRARIES})
+target_link_libraries(soundSynth Threads::Threads ${RTAUDIO_LIBRARIES})
